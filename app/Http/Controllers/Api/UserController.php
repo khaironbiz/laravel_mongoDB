@@ -48,14 +48,26 @@ class UserController extends Controller
             'email'             => 'required|unique:users,email|email',
             'nomor_telepone'    => 'required|unique:users,nomor_telepon|numeric',
         ]);
+        if( !empty($request->foto)){
+            $path       = '';
+            $file_name  = '';
+            $file_ext   = '';
+            $new_file_name = time().random_int(1000,9000).".".$file_ext;
+        }else{
+            $new_file_name='';
+        }
         $data_input = [
             'nama_depan'        => $request->nama_depan,
             'nama_belakang'     => $request->nama_belakang,
+            'gender'            => $request->gender,
+            'nik'               => $request->nik,
             'email'             => $request->email,
             'nomor_telepone'    => $request->nomor_telepone,
+            'foto'              => $new_file_name,
             'password'          => bcrypt($request->password),
             'address'           => $request->address,
-            'health_overview'   => $request->health_overview
+            'health_overview'   => $request->health_overview,
+            'wallet'            => $request->wallet
             ];
 
         if ($validator->fails()){
@@ -121,7 +133,6 @@ class UserController extends Controller
                 "data"      => $request->all()
             ],203);
         }
-
         if( !$user){
             return response()->json([
                 'message'   => 'Not Found',
