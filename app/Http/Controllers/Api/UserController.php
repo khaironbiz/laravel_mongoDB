@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,16 +17,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user   = User::where('email','anisa.fitri@gmail.comm');
-        $count  = $user->count();
-        $data   = $user->limit(10)->get();
-        return response()->json([
+        $user   = UserResource::collection(User::all());
+        $data   = [
             "status"        => "success",
             "status_code"   => 200,
             "time"          => time(),
-            "count"         => $count,
-            "data"          => $data,
-        ],200);
+            "content"       => $user
+        ];
+        return response()->json($data,200);
     }
 
     /**
@@ -47,23 +46,38 @@ class UserController extends Controller
             'nama_depan'        => 'required',
             'nama_belakang'     => 'required',
             'email'             => 'required|unique:users,email|email',
-            'hp'                => 'required|unique:users,nomor_telepon|numeric',
+            'nomor_telepone'    => 'required|unique:users,nomor_telepon|numeric',
         ]);
-        $data_chat              = $request->all();
-        $data_chat['_id']        = time().random_int(10000,99999);
+        $data_input = [
+            'nama_depan'        => $request->nama_depan,
+            'nama_belakang'     => $request->nama_belakang,
+            'email'             => $request->email,
+            'nomor_telepone'    => $request->nomor_telepone,
+            'password'          => bcrypt($request->password),
+            'address'           => $request->address,
+            'health_overview'   => $request->health_overview
+            ];
+
         if ($validator->fails()){
-            return response()->json([
+            $data = [
                 "error"     => $validator->errors(),
                 "created"   => time(),
-                "data"      => $data_chat
-            ],203);
+                "data"      => $data_input
+            ];
+            return response()->json($data,203);
         }
         $users = new User();
-        $add = $users->create([
-            'name'      => $request->nama_depan,
-            'email'     => $request->email,
-            'password'     => bcrypt('password')
-        ]);
+        $add = $users->create($data_input);
+        if($add){
+            $data = [
+                'status'        => 'success',
+                'status_code'   => 200,
+                'time'          => time(),
+                'contain'       => $request->all()
+            ];
+            return response()->json($data,200);
+
+        }
     }
 
     /**
@@ -74,13 +88,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-
-        return response()->json([
+        $data = [
             "status"        => "success",
             "status_code"   => 200,
             "time"          => time(),
             "data"          => $user
-        ],200);
+        ];
+        return response()->json($data,200);
 
     }
 
@@ -94,8 +108,10 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $data = [
-            'email'     => 'required|email',
-            'name'      => 'required'
+            'email'         => 'required|email',
+            'nama_depan'    => 'required',
+            'nama_belakang' => 'required',
+            'hp'            => 'required'
         ];
         $validator = Validator::make($request->all(),$data);
         if ($validator->fails()){
@@ -113,12 +129,13 @@ class UserController extends Controller
             ],404);
         }
         $update = $user->update($request->all());
-        return response()->json([
+        $data = [
             'message'   => 'Success',
             'code'      => 200,
             'update'    => $update,
             'data'      => User::find($user->id)
-        ]);
+        ];
+        return response()->json($data);
     }
 
     /**
@@ -127,16 +144,25 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user=User::find($id);
+
         $delete=$user->delete();
+        //jika sukses menghapus data
         if($delete){
-            return response()->json([
-               'status' => 'sccess',
-               'status_code'=>200,
-               'data'=>$user
-            ]);
+            $data = [
+                'status'         => 'sccess',
+                'status_code'    => 200,
+                'data'           => $user
+            ];
+            return response()->json($data);
         }
+        //jika gagal
+        $data = [
+            'status'         => 'failed',
+            'status_code'    => 400,
+            'data'           => $user
+        ];
+        return response()->json($data);
     }
 }

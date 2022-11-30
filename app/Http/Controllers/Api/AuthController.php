@@ -15,6 +15,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function notAuthorised(){
+        $data = [
+            'status'        => 'Not Authorised',
+            'status_code'   => 401,
+        ];
+        return response()->json($data,200);
+
+    }
     public function login(Request $request)
     {
         $data_validasi = [

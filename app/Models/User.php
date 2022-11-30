@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
+
 class User extends Eloquent implements AuthenticatableContract
 {
     use SoftDeletes, HasApiTokens, HasFactory, Notifiable, Authenticatable;
@@ -20,15 +21,17 @@ class User extends Eloquent implements AuthenticatableContract
      *
      * @var array<int, string>
      */
-    protected $connection = 'mongodb';
-    protected $primaryKey = '_id';
-    protected $dates = ['deleted_at'];
-    protected $fillable = [
+    protected $connection   = 'mongodb';
+    protected $primaryKey   = '_id';
+    protected $dates        = ['deleted_at'];
+    protected $fillable     = [
         'nama_depan',
         'nama_belakang',
         'email',
         'hp',
         'password',
+        'address',
+        'health_overview',
     ];
 
     /**
