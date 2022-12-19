@@ -112,7 +112,7 @@ class AuthController extends Controller
             'nama_belakang' => 'required',
             'jenis_kelamin' => 'required',
             'email'         => 'required|email:rfc,dns|unique:users,email',
-            'phone_cell'    => 'required|unique:users,phone_cell',
+            'phone_cell'    => 'required|unique:users,phone_cell'
         ];
 //        dd($data_validasi);
         $validator = Validator::make($request->all(),$data_validasi);
@@ -128,10 +128,10 @@ class AuthController extends Controller
             'nama_belakang'     => $request->nama_belakang,
             'jenis_kelamin'     => $request->jenis_kelamin,
             'email'             => $request->email,
-            'phone_cell'        => $request->phone_cell
+            'phone_cell'        => $request->phone_cell,
+            'password'          => bcrypt($request->password)
         ];
         $data_input['nama_lengkap'] = $request->gelar_depan." ".$request->nama_depan." ".$request->nama_belakang." ".$request->gelar_belakang;
-        $data_input['username']     = md5(uniqid());
         $user   = new User();
         $add    = $user->create($data_input);
         if($add){
