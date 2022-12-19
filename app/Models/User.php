@@ -24,15 +24,8 @@ class User extends Eloquent implements AuthenticatableContract
     protected $connection   = 'mongodb';
     protected $primaryKey   = '_id';
     protected $dates        = ['deleted_at'];
-    protected $fillable     = [
-        'nama_depan',
-        'nama_belakang',
-        'email',
-        'hp',
-        'password',
-        'address',
-        'health_overview',
-    ];
+    protected $guarded      = [];
+
 
     /**
      * The attributes that should be hidden for serialization.
