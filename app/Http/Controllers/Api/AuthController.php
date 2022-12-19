@@ -126,12 +126,15 @@ class AuthController extends Controller
         $data_input         = [
             'nama_depan'        => $request->nama_depan,
             'nama_belakang'     => $request->nama_belakang,
+            'nama_lengkap'      => $request->gelar_depan." ".$request->nama_depan." ".$request->nama_belakang." ".$request->gelar_belakang,
             'jenis_kelamin'     => $request->jenis_kelamin,
             'email'             => $request->email,
             'phone_cell'        => $request->phone_cell,
-            'password'          => bcrypt($request->password)
+            'password'          => bcrypt($request->password),
+            'active'            => false,
+            'level'             => 'user',
         ];
-        $data_input['nama_lengkap'] = $request->gelar_depan." ".$request->nama_depan." ".$request->nama_belakang." ".$request->gelar_belakang;
+
         $user   = new User();
         $add    = $user->create($data_input);
         if($add){
