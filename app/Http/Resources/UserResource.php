@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'nama_depan'        => $this->nama_depan,
             'nama_belakang'     => $this->nama_belakang,
             'nama'              => $this->nama,
+            'place_birth'       => $this->place_birth,
             'birth_date'        => $this->birth_date,
             'gender'            => $this->gender,
             'username'          => $this->username,
