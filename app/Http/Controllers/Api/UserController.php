@@ -60,6 +60,8 @@ class UserController extends Controller
             'nama_depan'        => $request->nama_depan,
             'nama_belakang'     => $request->nama_belakang,
             'gender'            => $request->gender,
+            'birth_date'        => $request->birth_date,
+            'place_birth'       => $request->place_birth,
             'nik'               => $request->nik,
             'email'             => $request->email,
             'nomor_telepone'    => $request->nomor_telepone,

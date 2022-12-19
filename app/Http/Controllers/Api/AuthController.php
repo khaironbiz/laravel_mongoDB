@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function notAuthorised(){
         $data = [
-            'status'        => 'Not Authorised',
+            'status'        => 'Not Authorized',
             'status_code'   => 401,
         ];
         return response()->json($data,200);
@@ -110,9 +110,7 @@ class AuthController extends Controller
         $data_validasi = [
             'nama_depan'    => 'required',
             'nama_belakang' => 'required',
-            'nik'           => 'numeric|unique:users,nik|digits_between:16,16',
             'jenis_kelamin' => 'required',
-            'tgl_lahir'     => 'required|date|date_format:Y-m-d',
             'email'         => 'required|email:rfc,dns|unique:users,email',
             'phone_cell'    => 'required|unique:users,phone_cell',
         ];
@@ -125,7 +123,13 @@ class AuthController extends Controller
                 "user"      => $request->all(),
             ],203);
         }
-        $data_input                 = $request->all();
+        $data_input         = [
+            'nama_depan'        => $request->nama_depan,
+            'nama_belakang'     => $request->nama_belakang,
+            'jenis_kelamin'     => $request->jenis_kelamin,
+            'email'             => $request->email,
+            'phone_cell'        => $request->phone_cell
+        ];
         $data_input['nama_lengkap'] = $request->gelar_depan." ".$request->nama_depan." ".$request->nama_belakang." ".$request->gelar_belakang;
         $data_input['username']     = md5(uniqid());
         $user   = new User();
