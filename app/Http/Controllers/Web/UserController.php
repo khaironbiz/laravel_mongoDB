@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
-use App\Models\Customer;
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -15,8 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Customer::all();
-        dd($user);
+        //
     }
 
     /**

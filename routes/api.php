@@ -24,6 +24,6 @@ Route::get('/notAuthorized',[AuthController::class,'notAuthorised'])->name('notA
 Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::post('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth:sanctum');
 Route::post('/register',[AuthController::class,'store'])->name('register');
-Route::resource('/users', UserController::class)->middleware('auth:sanctum');
+Route::resource('/users', UserController::class);
 Route::resource('/customers', CustomerController::class);
 
