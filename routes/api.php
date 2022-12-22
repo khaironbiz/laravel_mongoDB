@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/notAuthorised',[AuthController::class,'notAuthorised'])->name('notAuthorised');
+Route::get('/notAuthorized',[AuthController::class,'notAuthorised'])->name('notAuthorised');
 Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::post('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth:sanctum');
 Route::post('/register',[AuthController::class,'store'])->name('register');
