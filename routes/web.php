@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-Route::get('/customers',[App\Http\Controllers\CustomerController::class,'index'])->name('customers');
-Route::post('/customers',[App\Http\Controllers\CustomerController::class,'store'])->name('customers.store');
-Route::get('/customers/{id}',[App\Http\Controllers\CustomerController::class,'show'])->name('customers.show');
+})->name('home');
+Route::get('users', [UserController::class,'index'])->name('users.index');
+Route::get('users/{id}', [UserController::class,'show'])->name('users.show');
+Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit');
+
+Route::get('/customers',[CustomerController::class,'index'])->name('customers');
+Route::post('/customers',[CustomerController::class,'store'])->name('customers.store');
+Route::get('/customers/{id}',[CustomerController::class,'show'])->name('customers.show');
+
 

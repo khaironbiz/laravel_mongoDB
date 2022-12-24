@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Province;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ConsultantController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,15 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $data = [
-            "title"     => "Daftar User",
-            "class"     => "User",
-            "sub_class" => "Get All",
-            "content"   => "layout.admin",
-            "users"     => $users,
-        ];
-        return view('admin.user.index', $data);
+        //
     }
 
     /**
@@ -56,16 +46,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::find($id);
-        $data = [
-            "title"     => "Detail User",
-            "class"     => "User",
-            "sub_class" => "Get All",
-            "content"   => "layout.admin",
-            "users"     => $user,
-        ];
-        return view('admin.user.show', $data);
-
+        //
     }
 
     /**
@@ -76,18 +57,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $provinces= Province::all();
-        $data = [
-            "title"     => "Edit User",
-            "class"     => "User",
-            "sub_class" => "Get All",
-            "content"   => "layout.admin",
-            "users"     => $user,
-            "provinsi"  => $provinces
-        ];
-        return view('admin.user.edit', $data);
-
+        //
     }
 
     /**
