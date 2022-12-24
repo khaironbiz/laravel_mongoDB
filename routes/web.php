@@ -21,6 +21,8 @@ Route::get('/', function () {
 Route::get('users', [UserController::class,'index'])->name('users.index');
 Route::get('users/{id}', [UserController::class,'show'])->name('users.show');
 Route::get('users/{id}/edit', [UserController::class,'edit'])->name('users.edit');
+Route::post('users/{id}/update', [UserController::class,'update'])->name('users.update');
+Route::post('users/{id}/blokir', [UserController::class,'blokir'])->name('users.blokir');
 
 Route::get('/customers',[CustomerController::class,'index'])->name('customers');
 Route::post('/customers',[CustomerController::class,'store'])->name('customers.store');

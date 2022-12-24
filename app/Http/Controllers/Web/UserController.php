@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\user\UpdateUserRequest;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -97,9 +98,23 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $users      = User::find($id);
+        $validation = $request->validated();
+        dd($validation);
+
+    }
+    public function blokir(Request $request, $id)
+    {
+        $users      = User::find($id);
+        $setuju     = $request->setuju;
+        $update     = $users->update(['blokir' => 'Y']);
+        if($update){
+            return redirect()->route('users.index');
+
+        }
+
     }
 
     /**

@@ -14,6 +14,7 @@
                                 <th>Usia</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th>Aksi</th>
                                 </thead>
                                 <tbody>
                                 @foreach($users as $user)
@@ -23,6 +24,9 @@
                                         <td>{{ date('d', strtotime($user->birth_date))."-".date('m', strtotime($user->birth_date))."-".date('y', strtotime($user->birth_date)) }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->nomor_telepon }}</td>
+                                        <td>
+                                            <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-sm btn-info">Detail</a>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
