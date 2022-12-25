@@ -4,7 +4,7 @@ namespace App\Http\Requests\user;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateUserRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,14 +29,11 @@ class UpdateUserRequest extends FormRequest
             'gelar_depan'       => 'required',
             'gelar_belakang'    => 'required',
             'gender'            => 'required',
-            'nik'               => 'required|numeric|digits:16',
-            'nomor_telepon'     => 'required|numeric|digits_between:10,13',
-            'email'             => 'required|email:rfc,dns',
+            'nik'               => 'required|numeric|digits:16||unique:users,nik',
+            'nomor_telepon'     => 'required|numeric|digits_between:10,13||unique:users,nomor_telepon',
+            'email'             => 'required|email:rfc,dns|unique:users,email',
             'place_birth'       => 'required',
-            'birth_date'        => 'required|date',
-            'status_menikah'    => 'required',
-            'jenis_alamat'      => 'required'
-
+            'birth_date'        => 'required|date'
         ];
     }
 }
