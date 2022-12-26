@@ -140,9 +140,21 @@ class UserController extends Controller
 
     }
     public function null(){
-        $users = User::where('address', '')->first();
+        $users = User::where('address', NULL)->first();
         $user_id = $users->id;
-        $update = $users->update(['address' => '']);
+        $update = $users->update(['address' =>
+        [
+            'provinisi'     => '',
+            'kota'          => '',
+            'kecamatan'     => '',
+            'kelurahan'     => '',
+            'street'        => '',
+            'rt'            => '',
+            'rw'            => '',
+            'kode_pos'      => '',
+            'jenis_alamat'  => ''
+        ]
+        ]);
         if($update){
             return redirect()->route('users.null');
         }
