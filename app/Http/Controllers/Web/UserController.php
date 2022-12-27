@@ -8,6 +8,7 @@ use App\Http\Requests\user\UpdateUserRequest;
 use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -36,7 +37,18 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $users = new User();
+        $provinces= Province::orderBy('nama')->get();
+        $data = [
+            "title"     => "Detail User",
+            "class"     => "User",
+            "sub_class" => "Get All",
+            "content"   => "layout.admin",
+            "users"     => $users,
+            "provinsi"  => $provinces
+        ];
+        return view('admin.user.create', $data);
+
     }
 
     /**
@@ -48,12 +60,19 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $validator  = $request->validated();
-        $users      = new User();
-        $create     = $users->create($validator);
-        if($create){
-            return redirect()->route('users.index');
+        if($validator){
+            $users              = new User();
+            $input              = $request->all();
+            $input['nama']      = $request->gelar_depan.". ".$request->nama_depan." ".$request->nama_belakang.", $request->gelar_belakang";
+            $input['address']   = '';
+            $create             = $users->create($input);
+            if($create){
+                return redirect()->route('users.index');
+            }
         }
-        dd($validator);
+
+
+
     }
 
     /**
@@ -110,22 +129,30 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        $users      = User::find($id);
-        $data       = $request->validated();
-        $data['nama']= $request->gelar_depan.". ".$request->nama_depan." ".$request->nama_belakang.", $request->gelar_belakang";
-        $data['address']=[
-            'jenis_alamat'  => $request->jenis_alamat,
-            'street'        => $request->street,
-            'kelurahan'     => $request->kelurahan,
-            'kecamatan'     => $request->kecamatan,
-            'kota'          => $request->kota,
-            'provinsi'      => $request->provinsi,
-            'kode_pos'      => $request->kode_pos,
-        ];
-        $update     = $users->update($data);
-        if($update){
-            return redirect()->route('users.index');
+        $users              = User::find($id);
+        $validasi           = $request->validated();
+        if($validasi){
+            $data           = $request->all();
+            if($request->gelar_depan !=''){
+                if($request->gelar_belakang !=''){
+                    $data['nama']   = $request->gelar_depan.". ".$request->nama_depan." ".$request->nama_belakang.", $request->gelar_belakang";
+                }else{
+                    $data['nama']   = $request->gelar_depan.". ".$request->nama_depan." ".$request->nama_belakang;
+                }
+            }else if($request->gelar_belakang !=''){
+                $data['nama']   = $request->nama_depan." ".$request->nama_belakang.", $request->gelar_belakang";
+            }else{
+            $data['nama']   = $request->nama_depan." ".$request->nama_belakang;
+            }
+
+
+            $update     = $users->update($data);
+            if($update){
+                return redirect()->route('users.index');
+            }
+
         }
+
 
     }
     public function blokir(Request $request, $id)
@@ -139,26 +166,7 @@ class UserController extends Controller
         }
 
     }
-    public function null(){
-        $users = User::where('address', NULL)->first();
-        $user_id = $users->id;
-        $update = $users->update(['address' =>
-        [
-            'provinisi'     => '',
-            'kota'          => '',
-            'kecamatan'     => '',
-            'kelurahan'     => '',
-            'street'        => '',
-            'rt'            => '',
-            'rw'            => '',
-            'kode_pos'      => '',
-            'jenis_alamat'  => ''
-        ]
-        ]);
-        if($update){
-            return redirect()->route('users.null');
-        }
-    }
+
     public function kode($properti, $value)
     {
         $users = User::where($properti,'like', "%$value%")->orderBy('nama_depan')->get();
@@ -182,7 +190,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $users = User::find($id);
-        $destroy = $users->destroy();
+        $destroy = $users->destroy($id);
         if($destroy){
             return redirect()->route('users.index');
         }

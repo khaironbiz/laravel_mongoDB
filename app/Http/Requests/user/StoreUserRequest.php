@@ -24,15 +24,13 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_depan'        => 'required',
-            'nama_belakang'     => 'required',
-            'gelar_depan'       => 'required',
-            'gelar_belakang'    => 'required',
+            'nama_depan'        => 'required|alpha|min:3',
+            'nama_belakang'     => 'required|alpha|min:3',
             'gender'            => 'required',
             'nik'               => 'required|numeric|digits:16||unique:users,nik',
             'nomor_telepon'     => 'required|numeric|digits_between:10,13||unique:users,nomor_telepon',
             'email'             => 'required|email:rfc,dns|unique:users,email',
-            'place_birth'       => 'required',
+            'place_birth'       => 'required|alpha',
             'birth_date'        => 'required|date'
         ];
     }

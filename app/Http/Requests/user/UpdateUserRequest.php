@@ -35,7 +35,6 @@ class UpdateUserRequest extends FormRequest
             'place_birth'       => 'required',
             'birth_date'        => 'required|date',
             'status_menikah'    => 'required',
-            'jenis_alamat'      => 'required'
 
         ];
     }

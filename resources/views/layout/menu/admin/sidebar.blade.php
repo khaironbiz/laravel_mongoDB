@@ -62,10 +62,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="https://rspon.net/ppni/simk/logbook/" class="nav-link">
+                    <a href="{{ route('marital_status') }}" class="nav-link">
                         <i class="nav-icon fas fa-calculator"></i>
                         <p>
-                            Logbook
+                            Master
                         </p>
                     </a>
                 </li>
