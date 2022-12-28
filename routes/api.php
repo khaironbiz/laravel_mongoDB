@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/notAuthorized',[AuthController::class,'notAuthorised'])->name('notAuthorised');
 Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::post('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth:sanctum');
-Route::post('/register',[AuthController::class,'store'])->name('register');
+Route::post('/register',[AuthController::class,'register'])->name('register');
 Route::resource('/users', UserController::class);
 Route::resource('/customers', CustomerController::class);
 

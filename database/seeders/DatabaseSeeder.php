@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,17 +14,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//         \App\Models\User::factory(10)->create();
-
+//         \App\Models\User::factory(1000)->create();
          \App\Models\User::create([
-
+                '_id'       => time(),
              'email'        => 'khaironbiz@gmail.com',
              'password'     => bcrypt(123456),
              'nama'         => 'khairon',
              'nama_depan'   => 'Khairon',
              'nama_belakang'=> 'Anas',
              'birth_date'   => '1984-09-09',
-             'gender'       => 'm',
+             'gender'       => 'male',
              'nik'          => 1234567891123456,
              'nomor_telepon'=> '081213798746',
              'address'      => [

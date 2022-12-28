@@ -11,12 +11,12 @@
                         <div class="row mt-2 justify-content-center">
                             <div class="col-lg-6">
                                 <div class="card">
-                                    <div class="card-header bg-dark"><b>Create Master {{ $title }}</b></div>
-                                    <form action="{{ route('marital_status.store') }}" method="post">
+                                    <div class="card-header bg-dark"><b>Create {{ $title }}</b></div>
+                                    <form action="{{ route('ethnic.store') }}" method="post">
                                         @csrf
-                                        @include('admin.marital_status._form')
+                                        @include('admin.ethnic._form')
                                         <diV class="card-footer">
-                                            <a href="{{ route('marital_status') }}" class="btn btn-warning">Back</a>
+                                            <a href="{{ route('ethnic') }}" class="btn btn-warning">Back</a>
                                             <button type="submit" class="btn btn-primary">Save</button>
                                         </diV>
 

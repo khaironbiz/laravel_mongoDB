@@ -7,7 +7,6 @@
                     <div class="card">
                         <div class="card-header bg-info">
                             @include('layout.menu.admin.submenu.master')
-
                         </div>
                         @if(\Session::has('success'))
                             <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
@@ -26,25 +25,21 @@
                             </div>
                         @endif
                         <div class="card-body">
-                            <a href="{{ route('marital_status.create') }}" class="btn btn-primary mb-2">Add Data</a>
+                            <a href="{{ route('ethnic.create') }}" class="btn btn-primary mb-2">Add Data</a>
                             <table class="table table-sm mt-2" id="example1">
                                 <thead>
                                 <th>#</th>
-                                <th>Kode</th>
-                                <th>Text</th>
-                                <th>Description</th>
+                                <th>Suku</th>
                                 <th>Count</th>
-                                <th>Aksi</th>
+                                <th>Detail</th>
                                 </thead>
                                 <tbody>
-                                @foreach($marital_status as $data)
+                                @foreach($ethnic as $data)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $data->code }}</td>
-                                    <td>{{ $data->marital_status }}</td>
-                                    <td>{{ $data->description }}</td>
+                                    <td>{{ $data->suku }}</td>
                                     <td></td>
-                                    <td><a href="{{ route('marital_status.show', ['id'=> $data->id]) }}" class="btn btn-sm btn-info">Detail</a></td>
+                                    <td><a href="{{ route('ethnic.show', ['id' => $data->id]) }}" class="btn btn-sm btn-info">Detail</a></td>
                                 </tr>
                                 @endforeach
                                 </tbody>

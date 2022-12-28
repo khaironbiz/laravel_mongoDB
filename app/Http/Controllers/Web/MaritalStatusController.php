@@ -4,6 +4,7 @@ namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Marital_status\StoreMaritalStatusRequest;
+use App\Http\Requests\Marital_status\UpdateMaritalStatusRequest;
 use App\Models\Marital_status;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -70,7 +71,15 @@ class MaritalStatusController extends Controller
      */
     public function show($id)
     {
-        //
+        $marital_status = Marital_status::find($id);
+        $data = [
+            "title"             => "Marital Status",
+            "class"             => "Marital Status",
+            "sub_class"         => "Get All",
+            "content"           => "layout.admin",
+            "marital_status"    => $marital_status,
+        ];
+        return view('admin.marital_status.show', $data);
     }
 
     /**
@@ -81,7 +90,15 @@ class MaritalStatusController extends Controller
      */
     public function edit($id)
     {
-        //
+        $marital_status = Marital_status::find($id);
+        $data = [
+            "title"             => "Marital Status",
+            "class"             => "Marital Status",
+            "sub_class"         => "Get All",
+            "content"           => "layout.admin",
+            "marital_status"    => $marital_status,
+        ];
+        return view('admin.marital_status.edit', $data);
     }
 
     /**
@@ -91,9 +108,14 @@ class MaritalStatusController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateMaritalStatusRequest $request, $id)
     {
-        //
+        $data           = $request->validated();
+        $marital_status = Marital_status::find($id);
+        $update         = $marital_status->update($data);
+        if($update){
+            return redirect()->route('marital_status')->with('success', "Data berhasil disimpan");
+        }
     }
 
     /**
@@ -104,6 +126,19 @@ class MaritalStatusController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $marital_status = Marital_status::find($id);
+//        dd($marital_status);
+
+        if( empty($marital_status) ){
+            return redirect()->route('marital_status')->with('danger', "Data gagal dihapus");
+        }else{
+            $destroy        = $marital_status->destroy($id);
+            if($destroy){
+                return redirect()->route('marital_status')->with('success', "Data berhasil dihapus");
+            }
+
+        }
+
+
     }
 }
