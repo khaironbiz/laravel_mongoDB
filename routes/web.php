@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Web\EthnicController;
 use App\Http\Controllers\web\MaritalStatusController;
+use App\Http\Controllers\Web\ReligionController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,9 +43,18 @@ Route::post('marital-status/{id}/destroy', [MaritalStatusController::class,'dest
 Route::get('ethnics', [EthnicController::class, 'index'])->name('ethnic');
 Route::get('ethnic', [EthnicController::class, 'create'])->name('ethnic.create');
 Route::post('ethnic', [EthnicController::class, 'store'])->name('ethnic.store');
-Route::get('ethnic/{id}/show', [EthnicController::class, 'show'])->name('ethnic.show');
-Route::post('ethnic/{id}/update', [EthnicController::class, 'update'])->name('ethnic.update');
+Route::get('ethnic/{id}', [EthnicController::class, 'show'])->name('ethnic.show');
+Route::post('ethnic/{id}', [EthnicController::class, 'update'])->name('ethnic.update');
 Route::post('ethnic/{id}/destroy', [EthnicController::class, 'destroy'])->name('ethnic.destroy');
+Route::get('ethnic/{id}/restore', [EthnicController::class, 'restore'])->name('ethnic.restore');
+
+Route::get('religions', [ReligionController::class, 'index'])->name('religion');
+Route::get('religion', [ReligionController::class, 'create'])->name('religion.create');
+Route::post('religion', [ReligionController::class, 'store'])->name('religion.store');
+Route::get('religion/{id}', [ReligionController::class, 'show'])->name('religion.show');
+Route::get('religion/{id}/edit', [ReligionController::class, 'edit'])->name('religion.edit');
+Route::post('religion/{id}', [ReligionController::class, 'update'])->name('religion.update');
+Route::post('religion/{id}/destroy', [ReligionController::class, 'destroy'])->name('religion.destroy');
 
 Route::get('/customers',[CustomerController::class,'index'])->name('customers');
 Route::post('/customers',[CustomerController::class,'store'])->name('customers.store');

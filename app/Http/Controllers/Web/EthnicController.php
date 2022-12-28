@@ -128,7 +128,16 @@ class EthnicController extends Controller
         if($destroy){
             return redirect()->route('ethnic')->with('success', 'Data berhasil dihapus');
         }
+    }
+    public function restore($id)
+    {
+        $restore = Ethnic::withTrashed()
+            ->where('_id', $id)
+            ->restore();
 
+        if($restore){
+            return redirect()->route('ethnic')->with('success', 'Data berhasil dipulihkan');
+        }
 
     }
 }
