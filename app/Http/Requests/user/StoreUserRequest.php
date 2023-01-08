@@ -24,8 +24,8 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_depan'        => 'required|alpha|min:3',
-            'nama_belakang'     => 'required|alpha|min:3',
+            'nama_depan'        => 'required|min:3',
+            'nama_belakang'     => 'required|min:3',
             'gender'            => 'required',
             'nik'               => 'required|numeric|digits:16||unique:users,nik',
             'nomor_telepon'     => 'required|numeric|digits_between:10,13||unique:users,nomor_telepon',

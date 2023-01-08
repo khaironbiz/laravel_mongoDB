@@ -9,7 +9,7 @@
             <a class="nav-link text-white" href="{{ route('religion') }}">Agama</a>
             <a class="nav-link text-white" href="#">Devices</a>
             <a class="nav-link text-white" href="#">Profesi</a>
-            <a class="nav-link text-white" href="#">Pendidikan</a>
+            <a class="nav-link text-white" href="{{ route('education') }}">Pendidikan</a>
         </div>
     </div>
 </nav>

@@ -121,13 +121,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $data = [
-            'email'         => 'required|email',
-            'nama_depan'    => 'required',
-            'nama_belakang' => 'required',
-            'hp'            => 'required'
+        $data_input = [
+            'email'             => 'required|email',
+            'nama_depan'        => 'required',
+            'nama_belakang'     => 'required',
+            'nomor_telepone'    => 'required'
         ];
-        $validator = Validator::make($request->all(),$data);
+        $validator = Validator::make($request->all(),$data_input);
         if ($validator->fails()){
             return response()->json([
                 "error"     => $validator->errors(),

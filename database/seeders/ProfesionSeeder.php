@@ -95,5 +95,6 @@ class ProfesionSeeder extends Seeder
                 ]
             ]
         ];
+        \DB::table('profesions')->insert($data);
     }
 }
