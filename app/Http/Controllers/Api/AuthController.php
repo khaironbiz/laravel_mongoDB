@@ -26,8 +26,8 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $data_validasi = [
-            'email' => 'required|email',
-            'password' => 'required',
+            'email'     => 'required|email',
+            'password'  => 'required',
         ];
         $validator = Validator::make($request->all(),$data_validasi);
         if ($validator->fails()){
@@ -35,7 +35,10 @@ class AuthController extends Controller
                 'status'        => 'Unauthorized',
                 'status_code'   => 401,
                 "error"         => $validator->errors(),
-                'data'          => $request->all()
+                'data'          => [
+                    'username'  => $request->email,
+                    'password'  => Hash::make($request->password)
+                ]
             ], 401);
         }
         $user = User::where('email', $request->email)->first();
@@ -45,7 +48,10 @@ class AuthController extends Controller
                 'status'        => 'Unauthorized',
                 'status_code'   => 401,
                 "error"         => $validator->errors(),
-                'data'          => $request->all()
+                'data'          => [
+                    'username'  => $request->email,
+                    'password'  => Hash::make($request->password)
+                ]
             ], 401);
         }
         $token = $user->createToken('user')->plainTextToken;
@@ -122,7 +128,7 @@ class AuthController extends Controller
             'jenis_kelamin'     => $request->jenis_kelamin,
             'email'             => $request->email,
             'phone_cell'        => $request->phone_cell,
-            'password'          => bcrypt($request->password),
+            'password'          => Hash::make($request->password),
             'active'            => false,
             'level'             => 'user',
         ];
