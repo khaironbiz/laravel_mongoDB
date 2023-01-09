@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -66,7 +67,7 @@ class UserController extends Controller
             'email'             => $request->email,
             'nomor_telepone'    => $request->nomor_telepone,
             'foto'              => $new_file_name,
-            'password'          => bcrypt($request->password),
+            'password'          => Hash::make($request->password),
             'address'           => $request->address,
             'health_overview'   => $request->health_overview,
             'wallet'            => $request->wallet
