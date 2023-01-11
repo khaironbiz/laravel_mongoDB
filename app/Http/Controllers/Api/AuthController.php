@@ -32,8 +32,8 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(),$data_validasi);
         if ($validator->fails()){
             return response()->json([
-                'status'        => 'Unauthorized',
-                'status_code'   => 401,
+                'status'        => 'Gagal Validasi',
+                'status_code'   => 204,
                 "error"         => $validator->errors(),
                 'data'          => $request->all()
             ], 401);
