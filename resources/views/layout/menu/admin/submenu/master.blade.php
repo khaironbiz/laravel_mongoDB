@@ -6,10 +6,10 @@
         <div class="navbar-nav">
             <a class="nav-link text-white" href="{{ route('marital_status') }}">Marital Status</a>
             <a class="nav-link text-white" href="{{ route('ethnic') }}">Suku</a>
-            <a class="nav-link text-white" href="#">Agama</a>
-            <a class="nav-link text-white" href="#">Agama</a>
-            <a class="nav-link text-white" href="#">Agama</a>
-            <a class="nav-link text-white" href="#">Agama</a>
+            <a class="nav-link text-white" href="{{ route('religion') }}">Agama</a>
+            <a class="nav-link text-white" href="#">Devices</a>
+            <a class="nav-link text-white" href="#">Profesi</a>
+            <a class="nav-link text-white" href="{{ route('education') }}">Pendidikan</a>
         </div>
     </div>
 </nav>

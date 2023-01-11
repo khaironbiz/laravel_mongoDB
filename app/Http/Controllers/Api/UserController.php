@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -66,7 +67,7 @@ class UserController extends Controller
             'email'             => $request->email,
             'nomor_telepone'    => $request->nomor_telepone,
             'foto'              => $new_file_name,
-            'password'          => bcrypt($request->password),
+            'password'          => Hash::make($request->password),
             'address'           => $request->address,
             'health_overview'   => $request->health_overview,
             'wallet'            => $request->wallet
@@ -121,13 +122,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $data = [
-            'email'         => 'required|email',
-            'nama_depan'    => 'required',
-            'nama_belakang' => 'required',
-            'hp'            => 'required'
+        $data_input = [
+            'email'             => 'required|email',
+            'nama_depan'        => 'required',
+            'nama_belakang'     => 'required',
+            'nomor_telepone'    => 'required'
         ];
-        $validator = Validator::make($request->all(),$data);
+        $validator = Validator::make($request->all(),$data_input);
         if ($validator->fails()){
             return response()->json([
                 "error"     => $validator->errors(),

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Web\EducationController;
 use App\Http\Controllers\Web\EthnicController;
 use App\Http\Controllers\web\MaritalStatusController;
 use App\Http\Controllers\Web\ReligionController;
@@ -55,6 +56,14 @@ Route::get('religion/{id}', [ReligionController::class, 'show'])->name('religion
 Route::get('religion/{id}/edit', [ReligionController::class, 'edit'])->name('religion.edit');
 Route::post('religion/{id}', [ReligionController::class, 'update'])->name('religion.update');
 Route::post('religion/{id}/destroy', [ReligionController::class, 'destroy'])->name('religion.destroy');
+
+Route::get('educations', [EducationController::class, 'index'])->name('education');
+Route::get('education', [EducationController::class, 'create'])->name('education.create');
+Route::post('education', [EducationController::class, 'store'])->name('education.store');
+Route::get('education/{id}', [EducationController::class, 'show'])->name('education.show');
+Route::get('education/{id}/edit', [EducationController::class, 'edit'])->name('education.edit');
+Route::post('education/{id}', [EducationController::class, 'update'])->name('education.update');
+Route::post('education/{id}/delete', [EducationController::class, 'destroy'])->name('education.destroy');
 
 Route::get('/customers',[CustomerController::class,'index'])->name('customers');
 Route::post('/customers',[CustomerController::class,'store'])->name('customers.store');

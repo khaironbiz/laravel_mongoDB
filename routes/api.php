@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\EducationController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::get('/notAuthorized',[AuthController::class,'notAuthorised'])->name('notA
 Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::post('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth:sanctum');
 Route::post('/register',[AuthController::class,'register'])->name('register');
+Route::resource('/education', EducationController::class);
 Route::resource('/users', UserController::class);
 Route::resource('/customers', CustomerController::class);
 

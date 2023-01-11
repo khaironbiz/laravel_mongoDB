@@ -59,20 +59,9 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $validator  = $request->validated();
-        if($validator){
-            $users              = new User();
-            $input              = $request->all();
-            $input['nama']      = $request->gelar_depan.". ".$request->nama_depan." ".$request->nama_belakang.", $request->gelar_belakang";
-            $input['address']   = '';
-            $create             = $users->create($input);
-            if($create){
-                return redirect()->route('users.index');
-            }
-        }
-
-
-
+        $data_input = $request->all();
+        $data_json = json_encode($data_input);
+        dd($data_json);
     }
 
     /**
