@@ -13,115 +13,61 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Halaman yang memberikan informasi gagal authorisasi
      *
      * @return \Illuminate\Http\Response
      */
     public function notAuthorised(){
         $data = [
-            'status'        => 'Not Authorized',
             'status_code'   => 401,
+            'message'       => 'Not Authorized',
         ];
         return response()->json($data,200);
 
     }
+    /**
+     * halaman login, diperlukan username dan password
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required'],
-            'password' => ['required'],
-        ]);
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-                dd("sukses");
-//            return redirect()->intended('dashboard');
+        if (!Auth::attempt($request->only('email', 'password')))
+        {
+            $data = [
+                "status_code"   => 401,
+                'message'       => 'Unauthorized',
+                'time'          => time(),
+            ];
+            return response()->json($data, 401);
+        }else{
+            $user = User::where('email', $request['email'])->firstOrFail();
+            $token = $user->createToken('auth_token')->plainTextToken;
+            $content    = [
+                "token"         => $token,
+                "token_type"    => 'Bearer',
+                "id_user"       => $user->id,
+                "name"          => $user->name,
+                "email"         => $user->email
+            ];
+            $data   = [
+                "status_code"   => 200,
+                'message'       => 'Success',
+                'time'          => time(),
+                'content'       => $content,
+                'auth'          => auth()->user(),
+            ];
+            return response()
+                ->json($data, 200);
         }
-        dd("Not sukses");
-//        $lihat = auth()->attempt($credentials);
-//        dd($lihat);
-//        if (auth()->attempt($credentials)) {
-//            $user = auth()->user();
-//
-//            return (new UserResource($user))->additional([
-//                'token' => $user->createToken('myAppToken')->plainTextToken,
-//            ]);
-//        }
-//        $data_validasi = [
-//            'email'     => 'required|email',
-//            'password'  => 'required',
-//        ];
-//        $validator = Validator::make($request->all(),$data_validasi);
-//        if ($validator->fails()){
-//            return response()->json([
-//                'status'        => 'Unauthorized',
-//                'status_code'   => 401,
-//                "error"         => $validator->errors(),
-//                'data'          => [
-//                    'username'  => $request->email,
-//                    'password'  => bcrypt($request->password)
-//                ]
-//            ], 401);
-//        }
-//        $user = User::where('email', $request->email)->first();
-//        $perbandingan = [
-//            "password_db"   => $user->password,
-//            "password_post" => bcrypt($request->password)
-//        ];
-//
-//
-//        if(!$user || bcrypt($request->password) != $user->password){
-//            return response()->json([
-//                'status'        => 'Unauthorized',
-//                'status_code'   => 401,
-//                "error"         => $validator->errors(),
-//                'data'          => [
-//                    'username'  => $request->email,
-//                    'password'  => bcrypt($request->password)
-//                ]
-//            ], 401);
-//        }
-//        $token = $user->createToken('user')->plainTextToken;
-//        if($token){
-//            return response()->json([
-//                'status'        => 'Success',
-//                'status_code'   => 200,
-//                'access_token'  => $token,
-//                'token_type'    => 'Bearer',
-//                'device_name'   => $request->device_name,
-//                'data'          => $user
-//            ],200);
-//        }
-//        return response()->json([
-//            'status'        => 'Faild save token',
-//            'status_code'   => 200,
-//            'access_token'  => $token,
-//            'token_type'    => 'Bearer',
-//            'device_name'   => $request->device_name,
-//            'data'          => $user
-//        ],200);
-//
-//
-
     }
     public function logout(Request $request)
     {
-        $user = $request->user();
-        if($user){
-            $request->user()->currentAccessToken()->delete();
-            $data = [
-                'message' => 'success',
-                'user'  => $user
-            ];
-            return response()->json($data,200);
-
-        }
-        return response()->json([
-            'message' => 'Unauthorized'],
-            203);
-
+        auth()->user()->tokens()->delete();
+        return [
+            'message' => 'You have successfully logged out and the token was successfully deleted'
+        ];
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -141,11 +87,14 @@ class AuthController extends Controller
 //        dd($data_validasi);
         $validator = Validator::make($request->all(),$data_validasi);
         if ($validator->fails()){
-            return response()->json([
-                "error"     => $validator->errors(),
-                "created"   => time(),
-                "user"      => $request->all(),
-            ],203);
+            $data   = [
+                "status_code"   => 203,
+                "message"       => "Validation failed",
+                "error"         => $validator->errors(),
+                "time"          => time(),
+                "content"       => $request->all()
+            ];
+            return response()->json($data,203);
         }
         $data_input         = [
             'nama_depan'        => $request->nama_depan,
@@ -162,10 +111,13 @@ class AuthController extends Controller
         $user   = new User();
         $add    = $user->create($data_input);
         if($add){
-            return response()->json([
-                'message' => 'success',
-                'user'  => $data_input
-            ]);
+            $data =[
+                "status_code"   => 201,
+                "message"       => "Success",
+                "time"          => time(),
+                "user"          => $data_input
+            ];
+            return response()->json($data, 201);
         }
         return response()->json([
             'message' => 'faild'
