@@ -27,95 +27,18 @@ class AuthController extends Controller
     }
     public function login(Request $request)
     {
-<<<<<<< HEAD
-        $data_validasi = [
-            'email' => 'required|email',
-            'password' => 'required',
-        ];
-        $validator = Validator::make($request->all(),$data_validasi);
-        if ($validator->fails()){
-            return response()->json([
-                'status'        => 'Gagal Validasi',
-                'status_code'   => 204,
-                "error"         => $validator->errors(),
-                'data'          => $request->all()
-            ], 401);
-=======
-        $credentials = $request->validate([
-            'email' => ['required'],
-            'password' => ['required'],
-        ]);
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-                dd("sukses");
-//            return redirect()->intended('dashboard');
->>>>>>> bf504a852f3bdd65fc6dd1cc88165259ee4be3a4
+        if (!Auth::attempt($request->only('email', 'password')))
+        {
+            return response()
+                ->json(['message' => 'Unauthorized'], 401);
         }
-        dd("Not sukses");
-//        $lihat = auth()->attempt($credentials);
-//        dd($lihat);
-//        if (auth()->attempt($credentials)) {
-//            $user = auth()->user();
-//
-//            return (new UserResource($user))->additional([
-//                'token' => $user->createToken('myAppToken')->plainTextToken,
-//            ]);
-//        }
-//        $data_validasi = [
-//            'email'     => 'required|email',
-//            'password'  => 'required',
-//        ];
-//        $validator = Validator::make($request->all(),$data_validasi);
-//        if ($validator->fails()){
-//            return response()->json([
-//                'status'        => 'Unauthorized',
-//                'status_code'   => 401,
-//                "error"         => $validator->errors(),
-//                'data'          => [
-//                    'username'  => $request->email,
-//                    'password'  => bcrypt($request->password)
-//                ]
-//            ], 401);
-//        }
-//        $user = User::where('email', $request->email)->first();
-//        $perbandingan = [
-//            "password_db"   => $user->password,
-//            "password_post" => bcrypt($request->password)
-//        ];
-//
-//
-//        if(!$user || bcrypt($request->password) != $user->password){
-//            return response()->json([
-//                'status'        => 'Unauthorized',
-//                'status_code'   => 401,
-//                "error"         => $validator->errors(),
-//                'data'          => [
-//                    'username'  => $request->email,
-//                    'password'  => bcrypt($request->password)
-//                ]
-//            ], 401);
-//        }
-//        $token = $user->createToken('user')->plainTextToken;
-//        if($token){
-//            return response()->json([
-//                'status'        => 'Success',
-//                'status_code'   => 200,
-//                'access_token'  => $token,
-//                'token_type'    => 'Bearer',
-//                'device_name'   => $request->device_name,
-//                'data'          => $user
-//            ],200);
-//        }
-//        return response()->json([
-//            'status'        => 'Faild save token',
-//            'status_code'   => 200,
-//            'access_token'  => $token,
-//            'token_type'    => 'Bearer',
-//            'device_name'   => $request->device_name,
-//            'data'          => $user
-//        ],200);
-//
-//
+
+        $user = User::where('email', $request['email'])->firstOrFail();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()
+            ->json(['message' => 'Hi '.$user->name.', welcome to home','access_token' => $token, 'token_type' => 'Bearer', ]);
 
     }
     public function logout(Request $request)
