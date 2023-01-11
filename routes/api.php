@@ -26,6 +26,6 @@ Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::post('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth:sanctum');
 Route::post('/register',[AuthController::class,'register'])->name('register');
 Route::resource('/education', EducationController::class);
-Route::resource('/users', UserController::class);
+Route::resource('/users', UserController::class)->middleware('auth:sanctum');
 Route::resource('/customers', CustomerController::class);
 

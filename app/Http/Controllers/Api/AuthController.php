@@ -13,53 +13,61 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Halaman yang memberikan informasi gagal authorisasi
      *
      * @return \Illuminate\Http\Response
      */
     public function notAuthorised(){
         $data = [
-            'status'        => 'Not Authorized',
             'status_code'   => 401,
+            'message'       => 'Not Authorized',
         ];
         return response()->json($data,200);
 
     }
+    /**
+     * halaman login, diperlukan username dan password
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password')))
         {
+            $data = [
+                "status_code"   => 401,
+                'message'       => 'Unauthorized',
+                'time'          => time(),
+            ];
+            return response()->json($data, 401);
+        }else{
+            $user = User::where('email', $request['email'])->firstOrFail();
+            $token = $user->createToken('auth_token')->plainTextToken;
+            $content    = [
+                "token"         => $token,
+                "token_type"    => 'Bearer',
+                "id_user"       => $user->id,
+                "name"          => $user->name,
+                "email"         => $user->email
+            ];
+            $data   = [
+                "status_code"   => 200,
+                'message'       => 'Success',
+                'time'          => time(),
+                'content'       => $content,
+                'auth'          => auth()->user(),
+            ];
             return response()
-                ->json(['message' => 'Unauthorized'], 401);
+                ->json($data, 200);
         }
-
-        $user = User::where('email', $request['email'])->firstOrFail();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()
-            ->json(['message' => 'Hi '.$user->name.', welcome to home','access_token' => $token, 'token_type' => 'Bearer', ]);
-
     }
     public function logout(Request $request)
     {
-        $user = $request->user();
-        if($user){
-            $request->user()->currentAccessToken()->delete();
-            $data = [
-                'message' => 'success',
-                'user'  => $user
-            ];
-            return response()->json($data,200);
-
-        }
-        return response()->json([
-            'message' => 'Unauthorized'],
-            203);
-
+        auth()->user()->tokens()->delete();
+        return [
+            'message' => 'You have successfully logged out and the token was successfully deleted'
+        ];
     }
-
-
 
     /**
      * Store a newly created resource in storage.
@@ -79,11 +87,14 @@ class AuthController extends Controller
 //        dd($data_validasi);
         $validator = Validator::make($request->all(),$data_validasi);
         if ($validator->fails()){
-            return response()->json([
-                "error"     => $validator->errors(),
-                "created"   => time(),
-                "user"      => $request->all(),
-            ],203);
+            $data   = [
+                "status_code"   => 203,
+                "message"       => "Validation failed",
+                "error"         => $validator->errors(),
+                "time"          => time(),
+                "content"       => $request->all()
+            ];
+            return response()->json($data,203);
         }
         $data_input         = [
             'nama_depan'        => $request->nama_depan,
@@ -100,10 +111,13 @@ class AuthController extends Controller
         $user   = new User();
         $add    = $user->create($data_input);
         if($add){
-            return response()->json([
-                'message' => 'success',
-                'user'  => $data_input
-            ]);
+            $data =[
+                "status_code"   => 201,
+                "message"       => "Success",
+                "time"          => time(),
+                "user"          => $data_input
+            ];
+            return response()->json($data, 201);
         }
         return response()->json([
             'message' => 'faild'
