@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\EducationController;
+use App\Http\Controllers\Api\ObservationController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,7 @@ Route::post('/register',[AuthController::class,'register'])->name('register');
 Route::resource('/education', EducationController::class);
 Route::resource('/users', UserController::class);
 Route::resource('/customers', CustomerController::class);
+Route::resource('/observations', ObservationController::class);
+Route::post('/observation/HeartRate',[ObservationController::class, 'storeHeartRate'] );
+Route::post('/observation/RespiratoryRate',[ObservationController::class, 'storeRespiratoryRate'] );
 

@@ -311,6 +311,88 @@
             }
 
         },
+        "/observation": {
+            "get": {
+                "tags": ["Observation"],
+                "summary": "Get all observation",
+                "description": "Get all provinces from database, base on data kementerian dalam negeri tahun 2022",
+                "security": [
+                    {
+                        "UserAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get all provinsi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProvinceList"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Get All provinsi seluruh indonesia",
+                                        "value": [
+                                            {
+                                                "kode_provinsi": "01",
+                                                "nama_provinsi": "Aceh",
+                                                "versi": "2022",
+                                                "source": "Kementerian Dalam Negeri 2022"
+                                            },
+                                            {
+                                                "kode_provinsi": "31",
+                                                "nama_provinsi": "DKI Jakarta",
+                                                "versi": "2022",
+                                                "source": "Kementerian Dalam Negeri 2022"
+                                            }
+                                        ]
+
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Data Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnSuccess"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Data Not Found Response",
+                                        "value": {
+                                            "status_code": 204,
+                                            "message": "Data Not Found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "UnAuthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnSuccess"
+                                },
+                                "examples": {
+                                    "Forbiden": {
+                                        "description": "UnAuthorized Response",
+                                        "value": {
+                                            "status_code": 404,
+                                            "message": "UnAuthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/provinces": {
             "get": {
                 "tags": ["wilayah"],

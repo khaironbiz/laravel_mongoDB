@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Observation\StoreObservationRequest;
+use App\Http\Requests\Observation\UpdateObservationRequest;
 use App\Models\Observation;
-use App\Http\Requests\StoreObservationRequest;
-use App\Http\Requests\UpdateObservationRequest;
+use DateTime;
 
 class ObservationController extends Controller
 {
@@ -15,7 +17,7 @@ class ObservationController extends Controller
      */
     public function index()
     {
-        //
+        dd('hallo');
     }
 
     /**
@@ -31,12 +33,107 @@ class ObservationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreObservationRequest  $request
+     * @param  \App\Http\Requests\Observation\StoreObservationRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreObservationRequest $request)
+    public function storeHeartRate(StoreObservationRequest $request)
     {
-        //
+        $data   = [
+            "status" => "final",
+            "category" => [
+                [
+                    "coding" => [
+                        [
+                            "system"=>"http://terminology.hl7.org/CodeSystem/observation-category",
+                            "code"=> "vital-signs",
+                            "display"=> "Vital Signs"
+                        ]
+                    ]
+                ],
+            ],
+            "code" =>[
+                "coding" => [
+                    [
+                        "system"    => "http://loinc.org",
+                        "code"      => "8867-4",
+                        "display"   => "Heart rate"
+                    ]
+                ]
+            ],
+            "subject" =>[
+                "reference" => "Patient/100000030009"
+
+            ],
+            "performer" => [
+                [
+                    "reference" => "Practitioner/N10000001"
+                ]
+            ],
+            "encounter" => [
+                "reference" => "Encounter/".md5(uniqid()),
+                "display" => "Pemeriksaan Fisik Nadi Budi Santoso di hari Selasa, 14 Juni 2022"
+            ],
+            "effectiveDateTime" => date('Y-m-d'),
+            "issued" => "2022-06-14T07:00:00+07:00",
+            "valueQuantity" => [
+                "value"     => 80,
+                "unit"      => "beats/minute",
+                "system"    => "http://unitsofmeasure.org",
+                "code"      => "/min"
+            ]
+        ];
+        $observation    = new Observation();
+        $create         = $observation->create($data);
+    }
+    public function storeRespiratoryRate()
+    {
+        $data   = [
+            "status" => "final",
+            "category" => [
+                [
+                    "coding" => [
+                        [
+                            "system"    => "http://terminology.hl7.org/CodeSystem/observation-category",
+                            "code"      => "vital-signs",
+                            "display"   => "Vital Signs"
+                        ]
+                    ]
+                ],
+            ],
+            "code" =>[
+                "coding" => [
+                    [
+                        "system"    => "http://loinc.org",
+                        "code"      => "9279-1",
+                        "display"   => "Respiratory rate"
+                    ]
+                ]
+            ],
+            "subject" =>[
+                "reference" => "Patient/100000030009"
+
+            ],
+            "performer" => [
+                [
+                    "reference" => "Practitioner/N10000001"
+                ]
+            ],
+            "encounter" => [
+                "reference" => "Encounter/".md5(uniqid()),
+                "display" => "Pemeriksaan Fisik Nadi Budi Santoso di hari Selasa, 14 Juni 2022"
+            ],
+            "effectiveDateTime" => date('Y-m-d'),
+            "issued" => "2022-06-14T07:00:00+07:00",
+            "valueQuantity" => [
+                "value"     => 80,
+                "unit"      => "beats/minute",
+                "system"    => "http://unitsofmeasure.org",
+                "code"      => "/min"
+            ]
+        ];
+        $observation    = new Observation();
+        $create         = $observation->create($data);
+
     }
 
     /**
@@ -64,7 +161,7 @@ class ObservationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateObservationRequest  $request
+     * @param  \App\Http\Requests\Observation\UpdateObservationRequest  $request
      * @param  \App\Models\Observation  $observation
      * @return \Illuminate\Http\Response
      */
