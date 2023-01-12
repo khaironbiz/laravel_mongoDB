@@ -16,17 +16,12 @@ class UserResource extends JsonResource
     {
         return [
             'id'                => $this->_id,
-            'nama_depan'        => $this->nama_depan,
-            'nama_belakang'     => $this->nama_belakang,
             'nama'              => $this->nama,
-            'place_birth'       => $this->place_birth,
-            'birth_date'        => date('Y-m-d',strtotime($this->birth_date)),
+            'lahir'             => $this->lahir,
             'gender'            => $this->gender,
-            'username'          => $this->username,
             'nik'               => $this->nik,
-            'email'             => $this->email,
-            'nomor_telepon'     => $this->nomor_telepon,
-            'foto'              => $this->foto,
+            'kontak'            => $this->kontak,
+            'username'          => $this->username,
             'address'           => $this->address,
             'health_overview'   => $this->health_overview,
         ];

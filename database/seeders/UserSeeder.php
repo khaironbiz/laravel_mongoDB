@@ -17,54 +17,65 @@ class UserSeeder extends Seeder
         $data =[
             [
 
-            '_id'       => time(),
-            'email'        => 'khaironbiz@gmail.com',
-            'password'     => bcrypt(123456),
-            'nama'         => 'khairon',
-            'nama_depan'   => 'Khairon',
-            'nama_belakang'=> 'Anas',
-            'birth_date'   => '1984-09-09',
-            'gender'       => 'male',
-            'nik'          => 1234567891123456,
-            'nomor_telepon'=> '081213798746',
-            'address'      => [
-                'provinsi' => 'Jawa Barat',
-                'kota'     => 'Kab. Bogor',
-                'kecamatan'=> 'Sukaraja',
-                'kelurahan'=> 'Cilebut Barat',
-                'kode_pos' => 16710
-            ],
-            'health_overview'=>[
-                'chol' =>[
-                    'value'    => 186.6,
-                    'unit'     => 'mg/dL'
+                'nama'          => [
+                    'nama_depan'    => 'Khairon',
+                    'nama_belakang' => 'Anas',
+                    'nama_lengkap'  => 'Khairon Anas'
                 ],
-                'gluc' =>[
-                    'value'    => 106.6,
-                    'unit'     => 'mg/dL'
+                'gelar'         => [
+                    'gelar_depan'   => 'Ns',
+                    'gelar_belakang'=> 'AMK, S.Kep., S.Kom., M.Kom, MH'
                 ],
-                'suhu' =>[
-                    'value'    => 36.6,
-                    'unit'     => 'C'
+                'lahir'         => [
+                    'tanggal'       => '1984-09-09',
+                    'tempat'        => 'Cirebon'
                 ],
-                'tb'   =>[
-                    'value'    => 165,
-                    'unit'     => 'cm'
+                'kontak'        => [
+                    'email'        => 'khaironbiz@gmail.com',
+                    'nomor_telepon'=> '081213798746'
                 ],
-                'bb'   =>[
-                    'value'    => 72.6,
-                    'unit'     => 'Kg'
+                'gender'        => 'male',
+                'nik'           => 3209290609840002,
+                'username'      => 'khaironbiz@gmail.com',
+                'password'      => bcrypt(123456),
+                'address'       => [
+                    'provinsi'  => 'Jawa Barat',
+                    'kota'      => 'Kab. Bogor',
+                    'kecamatan' => 'Sukaraja',
+                    'kelurahan' => 'Cilebut Barat',
+                    'kode_pos'  => 16710
                 ],
-                'imt'  =>[
-                    'value'    => 24,
-                    'unit'     => 'kg/m2'
+                'pemeriksaan_kesehatan'=>[
+                    'chol' =>[
+                        'value'    => 186.6,
+                        'unit'     => 'mg/dL'
+                    ],
+                    'gluc' =>[
+                        'value'    => 106.6,
+                        'unit'     => 'mg/dL'
+                    ],
+                    'suhu' =>[
+                        'value'    => 36.6,
+                        'unit'     => 'C'
+                    ],
+                    'tb'   =>[
+                        'value'    => 165,
+                        'unit'     => 'cm'
+                    ],
+                    'bb'   =>[
+                        'value'    => 72.6,
+                        'unit'     => 'Kg'
+                    ],
+                    'imt'  =>[
+                        'value'    => 24,
+                        'unit'     => 'kg/m2'
+                    ]
+                ],
+                'wallet'       => [
+                    'currency' => 'IDR',
+                    'value'    => 360000
                 ]
-            ],
-            'wallet'       => [
-                'currency' => 'IDR',
-                'value'    => 360000
             ]
-        ]
         ];
         \DB::table('users')->insert($data);
     }

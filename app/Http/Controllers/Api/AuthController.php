@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Jobs\RegisterJob;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +34,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('email', 'password')))
+        if (!Auth::attempt($request->only('username', 'password')))
         {
             $data = [
                 "status_code"   => 401,
@@ -41,20 +43,14 @@ class AuthController extends Controller
             ];
             return response()->json($data, 401);
         }else{
-            $user = User::where('email', $request['email'])->firstOrFail();
-            $token = $user->createToken('auth_token')->plainTextToken;
-            $content    = [
-                "token"         => $token,
-                "token_type"    => 'Bearer',
-                "id_user"       => $user->id,
-                "name"          => $user->name,
-                "email"         => $user->email
-            ];
-            $data   = [
+            $user       = User::where('username', $request['username'])->firstOrFail();
+            $token      = $user->createToken('auth_token')->plainTextToken;
+            $data       = [
                 "status_code"   => 200,
                 'message'       => 'Success',
+                "token"         => $token,
+                "token_type"    => 'Bearer',
                 'time'          => time(),
-                'content'       => $content,
                 'auth'          => auth()->user(),
             ];
             return response()
@@ -75,47 +71,37 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $data_validasi = [
-            'nama_depan'    => 'required',
-            'nama_belakang' => 'required',
-            'jenis_kelamin' => 'required',
-            'email'         => 'required|email:rfc,dns|unique:users,email',
-            'phone_cell'    => 'required|unique:users,phone_cell'
-        ];
-//        dd($data_validasi);
-        $validator = Validator::make($request->all(),$data_validasi);
-        if ($validator->fails()){
-            $data   = [
-                "status_code"   => 203,
-                "message"       => "Validation failed",
-                "error"         => $validator->errors(),
-                "time"          => time(),
-                "content"       => $request->all()
-            ];
-            return response()->json($data,203);
-        }
-        $data_input         = [
-            'nama_depan'        => $request->nama_depan,
-            'nama_belakang'     => $request->nama_belakang,
-            'nama_lengkap'      => $request->gelar_depan." ".$request->nama_depan." ".$request->nama_belakang." ".$request->gelar_belakang,
-            'jenis_kelamin'     => $request->jenis_kelamin,
-            'email'             => $request->email,
-            'phone_cell'        => $request->phone_cell,
-            'password'          => bcrypt($request->password),
-            'active'            => false,
-            'level'             => 'user',
-        ];
+        $time_start = microtime(true);
+        // Sleep for a while
+        usleep(100);
 
-        $user   = new User();
-        $add    = $user->create($data_input);
+        $input              = $request->validated();
+        $input['password']  = bcrypt($request->password);
+        $input['active']    = false;
+        $input['level']     = 'user';
+        $user               = new User();
+        $add                = $user->create($input);
+        $data_email = [
+            'nama_penerima'     => $request->nama['nama_depan'],
+            'email_penerima'    => $request->kontak['email'],
+            'judul_email'       => "Notifikasi Registrasi",
+            'server'            => [
+                'ip'        => $request->ip(),
+                'browser'   => $_SERVER['HTTP_USER_AGENT'],
+                'time'      => time()
+            ]
+        ];
+        $sending_mail = dispatch(new RegisterJob($data_email));
+        $time_end   = microtime(true);
+        $time       = $time_end - $time_start;
         if($add){
-            $data =[
+            $data           = [
                 "status_code"   => 201,
                 "message"       => "Success",
-                "time"          => time(),
-                "user"          => $data_input
+                "user"          => $input,
+                "time"          => $time
             ];
             return response()->json($data, 201);
         }
