@@ -87,6 +87,7 @@ class AuthController extends Controller
             'nama_penerima'     => $request->nama['nama_depan'],
             'email_penerima'    => $request->kontak['email'],
             'judul_email'       => "Notifikasi Registrasi",
+            'view'              => "mail.register",
             'server'            => [
                 'ip'        => $request->ip(),
                 'browser'   => $_SERVER['HTTP_USER_AGENT'],

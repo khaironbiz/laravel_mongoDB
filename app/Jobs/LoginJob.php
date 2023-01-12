@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\LoginMail;
+use App\Mail\SimpleMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -33,7 +34,7 @@ class LoginJob implements ShouldQueue
     public function handle()
     {
         $data_email = $this->data_email;
-        $email      = new LoginMail($data_email);
+        $email      = new SimpleMail($data_email);
         Mail::to($data_email['email_penerima'])->send($email);
     }
 }

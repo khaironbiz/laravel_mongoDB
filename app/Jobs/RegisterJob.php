@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\RegistrationMail;
+use App\Mail\SimpleMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +36,7 @@ class RegisterJob implements ShouldQueue
     {
         //
         $data_email = $this->data_email;
-        $email      = new RegistrationMail($data_email);
+        $email      = new SimpleMail($data_email);
         Mail::to($data_email['email_penerima'])->send($email);
     }
 }
